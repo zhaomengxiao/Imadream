@@ -36,9 +36,15 @@
     <ClCompile Include="imadream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ximage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="imadream.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="ximage.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
