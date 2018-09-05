@@ -21,6 +21,7 @@
 #include <QtWidgets/QSlider>
 #include <QtWidgets/QStatusBar>
 #include <QtWidgets/QWidget>
+#include "ximage.h"
 
 QT_BEGIN_NAMESPACE
 
@@ -34,9 +35,9 @@ public:
     QPushButton *pushButton_pen;
     QPushButton *pushButton_eraser;
     QPushButton *pushButton_palette;
-    QSlider *horizontalSlider_pensize;
+    QSlider *Slider_pensize;
     QScrollArea *scrollArea_image;
-    QWidget *scrollAreaWidgetContents;
+    Ximage *imageWindow;
     QMenuBar *menuBar;
     QMenu *menu;
     QStatusBar *statusBar;
@@ -58,25 +59,28 @@ public:
         pushButton_pen = new QPushButton(groupBox);
         pushButton_pen->setObjectName(QStringLiteral("pushButton_pen"));
         pushButton_pen->setGeometry(QRect(20, 40, 75, 23));
+        pushButton_pen->setCheckable(true);
+        pushButton_pen->setChecked(true);
         pushButton_eraser = new QPushButton(groupBox);
         pushButton_eraser->setObjectName(QStringLiteral("pushButton_eraser"));
         pushButton_eraser->setGeometry(QRect(20, 80, 75, 23));
+        pushButton_eraser->setCheckable(true);
         pushButton_palette = new QPushButton(groupBox);
         pushButton_palette->setObjectName(QStringLiteral("pushButton_palette"));
         pushButton_palette->setGeometry(QRect(20, 120, 31, 23));
         pushButton_palette->setStyleSheet(QStringLiteral("background-color: rgb(255, 0, 0);"));
-        horizontalSlider_pensize = new QSlider(groupBox);
-        horizontalSlider_pensize->setObjectName(QStringLiteral("horizontalSlider_pensize"));
-        horizontalSlider_pensize->setGeometry(QRect(10, 180, 91, 22));
-        horizontalSlider_pensize->setOrientation(Qt::Horizontal);
+        Slider_pensize = new QSlider(groupBox);
+        Slider_pensize->setObjectName(QStringLiteral("Slider_pensize"));
+        Slider_pensize->setGeometry(QRect(10, 180, 91, 22));
+        Slider_pensize->setOrientation(Qt::Horizontal);
         scrollArea_image = new QScrollArea(centralWidget);
         scrollArea_image->setObjectName(QStringLiteral("scrollArea_image"));
         scrollArea_image->setGeometry(QRect(170, 30, 1101, 661));
-        scrollArea_image->setWidgetResizable(true);
-        scrollAreaWidgetContents = new QWidget();
-        scrollAreaWidgetContents->setObjectName(QStringLiteral("scrollAreaWidgetContents"));
-        scrollAreaWidgetContents->setGeometry(QRect(0, 0, 1099, 659));
-        scrollArea_image->setWidget(scrollAreaWidgetContents);
+        scrollArea_image->setWidgetResizable(false);
+        imageWindow = new Ximage();
+        imageWindow->setObjectName(QStringLiteral("imageWindow"));
+        imageWindow->setGeometry(QRect(0, 0, 1099, 659));
+        scrollArea_image->setWidget(imageWindow);
         ImadreamClass->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(ImadreamClass);
         menuBar->setObjectName(QStringLiteral("menuBar"));
@@ -93,6 +97,10 @@ public:
         menu->addAction(action_save);
 
         retranslateUi(ImadreamClass);
+        QObject::connect(pushButton_palette, SIGNAL(clicked()), ImadreamClass, SLOT(setColor()));
+        QObject::connect(pushButton_pen, SIGNAL(clicked()), ImadreamClass, SLOT(setPen()));
+        QObject::connect(pushButton_eraser, SIGNAL(clicked()), ImadreamClass, SLOT(setEraser()));
+        QObject::connect(Slider_pensize, SIGNAL(valueChanged(int)), ImadreamClass, SLOT(setBrushSize()));
 
         QMetaObject::connectSlotsByName(ImadreamClass);
     } // setupUi
